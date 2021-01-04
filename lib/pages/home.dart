@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:pharmexpo/pages/laboratoires.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import '../compount/mydrawer.dart';
 
-class Home extends StatefulWidget {
+class MyHome extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _MyHomeState createState() => _MyHomeState();
 }
 
-class _HomeState extends State<Home> {
+class _MyHomeState extends State<MyHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
