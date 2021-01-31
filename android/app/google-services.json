@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "888840642448",
+    "project_id": "demoproject-5431a",
+    "storage_bucket": "demoproject-5431a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888840642448:android:5ca87a0965cd64ab0edd15",
+        "android_client_info": {
+          "package_name": "com.example.pharmexpo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "888840642448-qsf2etkfuab2oi0n2pomhmancsrut6ta.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvK0-9RE9wPigzdXd26AhOOmdAwMBpgP8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "888840642448-qsf2etkfuab2oi0n2pomhmancsrut6ta.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
