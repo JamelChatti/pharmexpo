@@ -29,6 +29,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
   carousel_pro: ^1.0.0
+  http: ^0.12.2
+  shared_preferences: ^0.5.12+4
+  date_format: ^1.0.9
 
 dev_dependencies:
   flutter_test:
@@ -86,6 +89,9 @@ flutter:
     - images/indication/tache.jfif
     - images/indication/teinture.jfif
     - images/indication/visage.jfif
+    - images/ageperson/adult.jfif
+    - images/ageperson/enfant.png
+    - images/ageperson/bebe.jfif
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -40,9 +40,10 @@ class MyDrawer extends StatelessWidget {
               height: 30,
             ),
             ListTile(
-              title: Text('Sortie'),
+              title: Text('Login'),
               leading: Icon(Icons.exit_to_app, color: Colors.blue),
               onTap: () {
+                Navigator.of(context).pushNamed('login');
                 print('press');
               },
             ),
