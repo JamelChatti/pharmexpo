@@ -6,11 +6,26 @@ import 'dart:convert';
 import "package:http/http.dart" as http;
 
 class Login extends StatefulWidget {
+  Login({Key key}) : super (key : key);
   @override
   _LoginState createState() => _LoginState();
 }
+showloading(context){
+  return showDialog(context:context, builder: (context){
+    return AlertDialog(content : Row (children: <Widget>[Text('loading...   '),CircularProgressIndicator(strokeWidth: 6,)],) ,);
+  });
+}
+showloadingAll(context,String mytitle,String mycontent) {
+  return showDialog(context: context, builder: (context) {
+    return AlertDialog(title:Text(mytitle),content:Text(mycontent),actions:<Widget> [FlatButton(child: Text('Terminé'),onPressed: (){
+      Navigator.of(context).pop();
+    },)],);
 
+  });
+}
 class _LoginState extends State<Login> {
+
+ // bool isLoading = false;
 Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
   TextEditingController username = new TextEditingController();
   TextEditingController email = new TextEditingController();
@@ -69,14 +84,23 @@ Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
     var formdata = formstatesignin.currentState;
     if(formdata.validate()){
       formdata.save();
+      // setState(() {
+      //   isLoading = true;
+      // });
+      showloading(context);
       var data ={'email' : email.text, 'password': password.text };
       var url='http://192.168.42.23/pharmexpo/login.php';
       var response = await http.post(url,body:data);
       var responsebody = jsonDecode(response.body);
       if(responsebody['status']== 'success'){
         print(responsebody['username']);
+        Navigator.of(context).pushNamed('home');
       } else {
         print("username not found");
+        // setState(() {
+        //   isLoading = false;
+      //});
+        showloadingAll(context, 'Erreur','l\'utilisateur n\'existe pas');
       }
     }else{
       print('Formulaire non valide');
@@ -86,6 +110,7 @@ Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
     var formdata = formstatesignup.currentState;
     if(formdata.validate()){
       formdata.save();
+      showloading(context);
       var data ={'email' : email.text, 'password': password.text ,
       'username' : username.text };
       var url='http://192.168.42.23/pharmexpo/signup.php';
@@ -93,12 +118,17 @@ Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
       var responsebody = jsonDecode(response.body);
       if(responsebody['status']== 'success'){
         print('yes success');
+        Navigator.of(context).pushNamed('home');
       }
       else {
         print(responsebody['status']);
+        Navigator.of(context).pop();
+        showloadingAll(context, 'Erreur','l\'utilisateur existe déja');
       }
     }else{
-      print('not validte');
+      // setState(() {
+      //   isLoading = false;
+      // });
     }
   }
 
@@ -287,7 +317,14 @@ Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
             boxShadow: [
               BoxShadow(color: Colors.black, blurRadius: 6, spreadRadius: 3)
             ]),
-        child: Stack(
+        child:InkWell(
+            onTap: (){
+              setState(() {
+                showsignin=!showsignin;
+              });
+
+            },
+            child: Stack(
           children: <Widget>[
             Positioned(
               top: 15,
@@ -308,7 +345,8 @@ Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
               ),
             )
           ],
-        ));
+        )),
+       );
   }
 
   Center buildFormBoxSignIn(double mdw, bool showsignin) {
@@ -329,6 +367,8 @@ Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
                   offset: Offset(3, 3))
             ]),
         child: Form(
+          autovalidate: true,
+
           key: formstatesignin,
             child: Container(
               margin: EdgeInsets.only(top: 30),
@@ -360,7 +400,7 @@ Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
                     SizedBox(
                       height: 7,
                     ),
-                    buildTextFormFieldAll('mot de passe', false, password , validpassword),
+                    buildTextFormFieldAll('mot de passe', true, password , validpassword),
                     //fin mdp
                   ],
                 ),
