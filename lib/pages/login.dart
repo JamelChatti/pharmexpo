@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'dart:convert';
+import "package:http/http.dart" as http;
 
 class Login extends StatefulWidget {
   @override
@@ -63,18 +65,38 @@ Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
   }
 
 
-  signin(){
+  signin() async{
     var formdata = formstatesignin.currentState;
     if(formdata.validate()){
-      print('valid');
+      formdata.save();
+      var data ={'email' : email.text, 'password': password.text };
+      var url='http://192.168.42.23/pharmexpo/login.php';
+      var response = await http.post(url,body:data);
+      var responsebody = jsonDecode(response.body);
+      if(responsebody['status']== 'success'){
+        print(responsebody['username']);
+      } else {
+        print("username not found");
+      }
     }else{
-      print('not validte');
+      print('Formulaire non valide');
     }
   }
-  signup(){
+  signup() async{
     var formdata = formstatesignup.currentState;
     if(formdata.validate()){
-      print('valid');
+      formdata.save();
+      var data ={'email' : email.text, 'password': password.text ,
+      'username' : username.text };
+      var url='http://192.168.42.23/pharmexpo/signup.php';
+      var response =await http.post(url,body:data);
+      var responsebody = jsonDecode(response.body);
+      if(responsebody['status']== 'success'){
+        print('yes success');
+      }
+      else {
+        print(responsebody['status']);
+      }
     }else{
       print('not validte');
     }
@@ -93,7 +115,7 @@ Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
           print(showsignin);
         });
       };
-    // TODO: implement initState
+
     super.initState();
   }
 
@@ -317,14 +339,14 @@ Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
                   children: <Widget>[
                     //debut nom utilisateur
                     Text(
-                      'Nom de l\'utilisateur',
+                      'email de l\'utilisateur',
                       style: TextStyle(color: Colors.blue),
                     ),
                     SizedBox(
                       height: 7,
                     ),
                     buildTextFormFieldAll(
-                        'entrer le nom de l\'utilisateur', false, username , validusername),
+                        'entrer l\'email de l\'utilisateur', false, email , validemail),
 
                     //fin nom utilisateur
                     SizedBox(
@@ -366,6 +388,7 @@ Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
                   offset: Offset(3, 3))
             ]),
         child: Form(
+            autovalidate: true,
           key: formstatesignup,
             child: Container(
               margin: EdgeInsets.only(top: 20),
@@ -436,7 +459,7 @@ Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
   TextFormField buildTextFormFieldAll(String myhintText, bool pass,
       TextEditingController myController, myvalid) {
     return TextFormField(
-      autovalidate: true,
+
       controller: myController,
       validator: myvalid,
       obscureText: pass,
