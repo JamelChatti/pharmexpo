@@ -8,27 +8,51 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pharmexpo/Globals.dart';
 
 class Login extends StatefulWidget {
-  Login({Key key}) : super (key : key);
+  Login({Key key}) : super(key: key);
+
   @override
   _LoginState createState() => _LoginState();
 }
-showloading(context){
-  return showDialog(context:context, builder: (context){
-    return AlertDialog(content : Row (children: <Widget>[Text('loading...   '),CircularProgressIndicator(strokeWidth: 6,)],) ,);
-  });
-}
-showloadingAll(context,String mytitle,String mycontent) {
-  return showDialog(context: context, builder: (context) {
-    return AlertDialog(title:Text(mytitle),content:Text(mycontent),actions:<Widget> [FlatButton(child: Text('Terminé'),onPressed: (){
-      Navigator.of(context).pop();
-    },)],);
 
-  });
+showloading(context) {
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Row(
+            children: <Widget>[
+              Text('loading...   '),
+              CircularProgressIndicator(
+                strokeWidth: 6,
+              )
+            ],
+          ),
+        );
+      });
 }
+
+showloadingAll(context, String mytitle, String mycontent) {
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(mytitle),
+          content: Text(mycontent),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Terminé'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      });
+}
+
 class _LoginState extends State<Login> {
-
- // bool isLoading = false;
-Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
+  // bool isLoading = false;
+  Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
   TextEditingController username = new TextEditingController();
   TextEditingController email = new TextEditingController();
   TextEditingController password = new TextEditingController();
@@ -36,13 +60,18 @@ Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
   GlobalKey<FormState> formstatesignup = new GlobalKey<FormState>();
   GlobalKey<FormState> formstatesignin = new GlobalKey<FormState>();
 
-savePref(String username,String email)async{
-  Globals.localStorage.setString("username", username);
-  Globals.localStorage.setString("email", email);
-  Globals.localStorage.setBool("isSignin", true);
-  print(Globals.localStorage.getString('username'),);
-  print(Globals.localStorage.getString('email'),);
-}
+  savePref(String username, String email) async {
+    Globals.localStorage.setString("username", username);
+    Globals.localStorage.setString("email", email);
+    Globals.localStorage.setBool("isSignin", true);
+    print(
+      Globals.localStorage.getString('username'),
+    );
+    print(
+      Globals.localStorage.getString('email'),
+    );
+  }
+
 // getPref()async{
 //   SharedPreferences preferences =await SharedPreferences.getInstance();
 //   var username = preferences.getString('username');
@@ -52,98 +81,107 @@ savePref(String username,String email)async{
 //   }
 // }
 
-  String validglobal(String  val){
-    if(val.isEmpty){
+  String validglobal(String val) {
+    if (val.isEmpty) {
       return 'le champ est vide';
     }
   }
 
-  String validusername(String  val){
-    if(val.trim().isEmpty){
+  String validusername(String val) {
+    if (val.trim().isEmpty) {
       return 'le nom de l\'utilisateur ne peut pas être vide';
-    }if(val.trim().length<4){
+    }
+    if (val.trim().length < 4) {
       return 'le nombre de caractères ne peut pas être inferieur à 4';
-    }if(val.trim().length>20){
+    }
+    if (val.trim().length > 20) {
       return 'le nombre de caractères ne peut pas être supérieur à 20';
     }
   }
 
-  String validpassword(String  val){
-    if(val.trim().isEmpty){
+  String validpassword(String val) {
+    if (val.trim().isEmpty) {
       return 'le mot de passe ne peut pas être vide';
-    }if(val.trim().length<4){
+    }
+    if (val.trim().length < 4) {
       return 'le mot de passe ne peut pas être inferieur à 4';
-    }if(val.trim().length>15){
+    }
+    if (val.trim().length > 15) {
       return 'le nombre de caractères ne peut pas être supérieur à 20';
     }
   }
-  String validconfirmpassword(String  val){
-    if(val != password.text){
+
+  String validconfirmpassword(String val) {
+    if (val != password.text) {
       return 'le mot de passe n\'est pas conforme ';
     }
   }
 
-  String validemail(String  val){
-    if(val.trim().isEmpty){
+  String validemail(String val) {
+    if (val.trim().isEmpty) {
       return 'l\'email ne peut pas être vide';
-    }if(val.trim().length<4){
+    }
+    if (val.trim().length < 4) {
       return 'le nombre de caractères ne peut pas être inferieur à 4';
-    }if(val.trim().length>20){
+    }
+    if (val.trim().length > 20) {
       return 'le nombre de caractères ne peut pas être supérieur à 20';
     }
     RegExp regExp = new RegExp(pattern);
-       if(!regExp.hasMatch(val)){
-         return 'email n\'est pas valid exemple:  foulen@gmail.com';
-       }
+    if (!regExp.hasMatch(val)) {
+      return 'email n\'est pas valid exemple:  foulen@gmail.com';
+    }
   }
 
-
-  signin() async{
+  signin() async {
     var formdata = formstatesignin.currentState;
-    if(formdata.validate()){
+    if (formdata.validate()) {
       formdata.save();
       // setState(() {
       //   isLoading = true;
       // });
       showloading(context);
-      var data ={'email' : email.text, 'password': password.text };
-      var url='http://192.168.42.23/pharmexpo/login.php';
-      var response = await http.post(url,body:data);
+      var data = {'email': email.text, 'password': password.text};
+      var url = 'http://192.168.42.23/pharmexpo/login.php';
+      var response = await http.post(url, body: data);
       var responsebody = jsonDecode(response.body);
-      if(responsebody['status']== 'success'){
-        savePref(responsebody['username'] ,responsebody['email'] );
+      if (responsebody['status'] == 'success') {
+        savePref(responsebody['username'], responsebody['email']);
         Navigator.of(context).pushNamed('home');
       } else {
         print("username not found");
         // setState(() {
         //   isLoading = false;
-      //});
-        showloadingAll(context, 'Erreur','l\'utilisateur n\'existe pas');
+        //});
+        showloadingAll(context, 'Erreur', 'l\'utilisateur n\'existe pas');
       }
-    }else{
+    } else {
       print('Formulaire non valide');
     }
   }
-  signup() async{
+
+  signup() async {
     var formdata = formstatesignup.currentState;
-    if(formdata.validate()){
+    if (formdata.validate()) {
       formdata.save();
       showloading(context);
-      var data ={'email' : email.text, 'password': password.text ,
-      'username' : username.text };
-      var url='http://192.168.42.23/pharmexpo/signup.php';
-      var response =await http.post(url,body:data);
+      var data = {
+        'email': email.text,
+        'password': password.text,
+        'username': username.text
+      };
+      var url = 'http://192.168.42.23/pharmexpo/signup.php';
+      var response = await http.post(url, body: data);
       var responsebody = jsonDecode(response.body);
-      if(responsebody['status']== 'success'){
+      if (responsebody['status'] == 'success') {
         print('yes success');
         Navigator.of(context).pushNamed('home');
-      }
-      else {
+      } else {
         print(responsebody['status']);
         Navigator.of(context).pop();
-        showloadingAll(context, 'Erreur','l\'utilisateur existe déja');
+        showloadingAll(context, 'Erreur', 'l\'utilisateur existe déja');
       }
-    }else{
+    } else {
       // setState(() {
       //   isLoading = false;
       // });
@@ -169,19 +207,13 @@ savePref(String username,String email)async{
 
   @override
   Widget build(BuildContext context) {
-    var mdw = MediaQuery
-        .of(context)
-        .size
-        .width;
-    var mdh = MediaQuery
-        .of(context)
-        .size
-        .width;
+    var mdw = MediaQuery.of(context).size.width;
+    var mdh = MediaQuery.of(context).size.width;
 
     return Scaffold(
         appBar: AppBar(
           title:
-          Text(showsignin ? 'Enregistrez votre entrer' : 'Creer un compte'),
+              Text(showsignin ? 'Enregistrez votre entrer' : 'Creer un compte'),
         ),
         body: Stack(
           children: <Widget>[
@@ -227,10 +259,10 @@ savePref(String username,String email)async{
                         RaisedButton(
                           elevation: 10,
                           color:
-                          showsignin ? Colors.blue : Colors.lightGreen[800],
+                              showsignin ? Colors.blue : Colors.lightGreen[800],
                           padding: EdgeInsets.symmetric(
                               vertical: 10, horizontal: 40),
-                          onPressed:showsignin? signin : signup,
+                          onPressed: showsignin ? signin : signup,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
@@ -255,12 +287,12 @@ savePref(String username,String email)async{
                         Container(
                           width: 390,
                           margin: EdgeInsets.only(
-                              top: 20, bottom: showsignin ? 0 : 50),
+                              top: 20, bottom: 20),
                           padding: EdgeInsets.only(right: 3, left: 3),
                           child: RichText(
                             text: TextSpan(
                                 style: TextStyle(
-                                    color: Colors.black, fontSize: 17),
+                                    color: Colors.black, fontSize: 17,),
                                 children: <TextSpan>[
                                   TextSpan(
                                       text: showsignin
@@ -277,7 +309,49 @@ savePref(String username,String email)async{
                                           fontWeight: FontWeight.bold))
                                 ]),
                           ),
-                        )
+                        ),
+                        Container(child: Text('Se connecter avec mon compte:', textAlign: TextAlign.center,),),
+                        Row(
+                          children: <Widget>[
+                            Padding(padding: EdgeInsets.all(7) ,),
+                            Expanded(
+                              child: (RaisedButton(
+                                elevation: 20,
+                                padding:EdgeInsets.all(10),
+                                color: Colors.lightBlueAccent[100],
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Image.asset('images/rsocial/f.png', fit: BoxFit.fill, height: 50,width: 150,),
+                                    SizedBox(width: 10,),
+                                  ],
+                                ),
+
+                                onPressed: () {},
+                              )),
+                            ),
+                            Padding(padding: EdgeInsets.all(7) ,),
+                            Expanded(
+                              child: (RaisedButton(
+                                elevation: 20,
+                                padding:EdgeInsets.all(10),
+                                color: Colors.red[300],
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Image.asset('images/rsocial/g.png',fit: BoxFit.fill, height: 50,width: 150,),
+                                    SizedBox(width: 10,),
+
+                                  ],
+                                ),
+
+                                onPressed: () {},
+                              )),
+                            ),
+                            Padding(padding: EdgeInsets.all(7) ,),
+                          ],
+                        ),
+
                       ]),
                     ),
                   ],
@@ -288,23 +362,22 @@ savePref(String username,String email)async{
         ));
   }
 
-
   Positioned buildPositionedTop(double mdw, bool showsignin) {
     return Positioned(
         child: Transform.scale(
-          scale: 1.3,
-          child: Transform.translate(
-            offset: Offset(0, -250),
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 900),
-              height: mdw,
-              width: mdw,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(mdw),
-                  color: showsignin ? Colors.blueGrey : Colors.lime[600]),
-            ),
-          ),
-        ));
+      scale: 1.3,
+      child: Transform.translate(
+        offset: Offset(0, -250),
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 900),
+          height: mdw,
+          width: mdw,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(mdw),
+              color: showsignin ? Colors.blueGrey : Colors.lime[600]),
+        ),
+      ),
+    ));
   }
 
   Positioned buildPositionedBottom(double mdw, bool showsignin) {
@@ -326,45 +399,44 @@ savePref(String username,String email)async{
 
   AnimatedContainer buildContainerAvatar(double mdw) {
     return AnimatedContainer(
-        duration: Duration(milliseconds: 900),
-        height: 100,
-        width: 100,
-        decoration: BoxDecoration(
-            color: showsignin ? Colors.yellow : Colors.grey,
-            borderRadius: BorderRadius.circular(100),
-            boxShadow: [
-              BoxShadow(color: Colors.black, blurRadius: 6, spreadRadius: 3)
-            ]),
-        child:InkWell(
-            onTap: (){
-              setState(() {
-                showsignin=!showsignin;
-              });
-
-            },
-            child: Stack(
-          children: <Widget>[
-            Positioned(
-              top: 15,
-              right: 15,
-              child: Icon(
-                Icons.person_outline,
-                size: 70,
-                color: Colors.white,
+      duration: Duration(milliseconds: 900),
+      height: 100,
+      width: 100,
+      decoration: BoxDecoration(
+          color: showsignin ? Colors.yellow : Colors.grey,
+          borderRadius: BorderRadius.circular(100),
+          boxShadow: [
+            BoxShadow(color: Colors.black, blurRadius: 6, spreadRadius: 3)
+          ]),
+      child: InkWell(
+          onTap: () {
+            setState(() {
+              showsignin = !showsignin;
+            });
+          },
+          child: Stack(
+            children: <Widget>[
+              Positioned(
+                top: 15,
+                right: 15,
+                child: Icon(
+                  Icons.person_outline,
+                  size: 70,
+                  color: Colors.white,
+                ),
               ),
-            ),
-            Positioned(
-              top: 35,
-              right: 5,
-              child: Icon(
-                Icons.arrow_forward,
-                size: 30,
-                color: Colors.white,
-              ),
-            )
-          ],
-        )),
-       );
+              Positioned(
+                top: 35,
+                right: 5,
+                child: Icon(
+                  Icons.arrow_forward,
+                  size: 30,
+                  color: Colors.white,
+                ),
+              )
+            ],
+          )),
+    );
   }
 
   Center buildFormBoxSignIn(double mdw, bool showsignin) {
@@ -385,9 +457,8 @@ savePref(String username,String email)async{
                   offset: Offset(3, 3))
             ]),
         child: Form(
-          autovalidate: true,
-
-          key: formstatesignin,
+            autovalidate: true,
+            key: formstatesignin,
             child: Container(
               margin: EdgeInsets.only(top: 30),
               padding: EdgeInsets.all(10),
@@ -403,8 +474,8 @@ savePref(String username,String email)async{
                     SizedBox(
                       height: 7,
                     ),
-                    buildTextFormFieldAll(
-                        'entrer l\'email de l\'utilisateur', false, email , validemail),
+                    buildTextFormFieldAll('entrer l\'email de l\'utilisateur',
+                        false, email, validemail),
 
                     //fin nom utilisateur
                     SizedBox(
@@ -418,7 +489,8 @@ savePref(String username,String email)async{
                     SizedBox(
                       height: 7,
                     ),
-                    buildTextFormFieldAll('mot de passe', true, password , validpassword),
+                    buildTextFormFieldAll(
+                        'mot de passe', true, password, validpassword),
                     //fin mdp
                   ],
                 ),
@@ -447,68 +519,69 @@ savePref(String username,String email)async{
             ]),
         child: Form(
             autovalidate: true,
-          key: formstatesignup,
+            key: formstatesignup,
             child: Container(
               margin: EdgeInsets.only(top: 20),
               padding: EdgeInsets.all(10),
               child: SingleChildScrollView(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      //debut nom utilisateur
-                      Text(
-                        'Nom de l\'utilisateur',
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                      SizedBox(
-                        height: 7,
-                      ),
-                      buildTextFormFieldAll(
-                        'entrez le nom de l\'utilisateur', false,username , validusername),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  //debut nom utilisateur
+                  Text(
+                    'Nom de l\'utilisateur',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                  SizedBox(
+                    height: 7,
+                  ),
+                  buildTextFormFieldAll('entrez le nom de l\'utilisateur',
+                      false, username, validusername),
 
-                      //fin nom utilisateur
-                      SizedBox(
-                        height: 10,
-                      ),
-                      //debut mdp
-                      Text(
-                        'Entrer le mot de passe',
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                      SizedBox(
-                        height: 7,
-                      ),
-                      buildTextFormFieldAll('mot de passe', true, password , validpassword),
+                  //fin nom utilisateur
+                  SizedBox(
+                    height: 10,
+                  ),
+                  //debut mdp
+                  Text(
+                    'Entrer le mot de passe',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                  SizedBox(
+                    height: 7,
+                  ),
+                  buildTextFormFieldAll(
+                      'mot de passe', true, password, validpassword),
 
-                      //fin mdp
-                      SizedBox(
-                        height: 10,
-                      ),
-                      //debut mdp
-                      Text(
-                        'Confirmer le mot de passe',
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                      SizedBox(
-                        height: 7,
-                      ),
-                      buildTextFormFieldAll(
-                          'confirmer le mot de passe', true, confirmpassword , validconfirmpassword),
+                  //fin mdp
+                  SizedBox(
+                    height: 10,
+                  ),
+                  //debut mdp
+                  Text(
+                    'Confirmer le mot de passe',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                  SizedBox(
+                    height: 7,
+                  ),
+                  buildTextFormFieldAll('confirmer le mot de passe', true,
+                      confirmpassword, validconfirmpassword),
 
-                      SizedBox(
-                        height: 10,
-                      ),
-                      //debut mdp
-                      Text(
-                        'Entrer votre email',
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                      SizedBox(
-                        height: 7,
-                      ),
-                      buildTextFormFieldAll('email', false, email , validemail)
-                    ],
-                  )),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  //debut mdp
+                  Text(
+                    'Entrer votre email',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                  SizedBox(
+                    height: 7,
+                  ),
+                  buildTextFormFieldAll('email', false, email, validemail)
+                ],
+              )),
             )),
       ),
     );
@@ -517,7 +590,6 @@ savePref(String username,String email)async{
   TextFormField buildTextFormFieldAll(String myhintText, bool pass,
       TextEditingController myController, myvalid) {
     return TextFormField(
-
       controller: myController,
       validator: myvalid,
       obscureText: pass,
