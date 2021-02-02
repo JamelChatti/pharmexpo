@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:convert';
 import "package:http/http.dart" as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pharmexpo/Globals.dart';
 
 class Login extends StatefulWidget {
   Login({Key key}) : super (key : key);
@@ -33,6 +35,22 @@ Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
   TextEditingController confirmpassword = new TextEditingController();
   GlobalKey<FormState> formstatesignup = new GlobalKey<FormState>();
   GlobalKey<FormState> formstatesignin = new GlobalKey<FormState>();
+
+savePref(String username,String email)async{
+  Globals.localStorage.setString("username", username);
+  Globals.localStorage.setString("email", email);
+  Globals.localStorage.setBool("isSignin", true);
+  print(Globals.localStorage.getString('username'),);
+  print(Globals.localStorage.getString('email'),);
+}
+// getPref()async{
+//   SharedPreferences preferences =await SharedPreferences.getInstance();
+//   var username = preferences.getString('username');
+//   var email = preferences.getString('email');
+//   if(age != null){
+//     Navigator.of(context).pushNamed('home');
+//   }
+// }
 
   String validglobal(String  val){
     if(val.isEmpty){
@@ -93,7 +111,7 @@ Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
       var response = await http.post(url,body:data);
       var responsebody = jsonDecode(response.body);
       if(responsebody['status']== 'success'){
-        print(responsebody['username']);
+        savePref(responsebody['username'] ,responsebody['email'] );
         Navigator.of(context).pushNamed('home');
       } else {
         print("username not found");
@@ -190,7 +208,7 @@ Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
                     Padding(
                       padding: EdgeInsets.only(top: showsignin ? 20 : 10),
                     ),
-                    buildContainerAvatar(mdw, showsignin),
+                    buildContainerAvatar(mdw),
                     showsignin
                         ? buildFormBoxSignIn(mdw, showsignin)
                         : buildFormBoxSignUp(mdw, showsignin),
@@ -306,7 +324,7 @@ Pattern pattern = r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
     );
   }
 
-  AnimatedContainer buildContainerAvatar(double mdw, bool showsignin) {
+  AnimatedContainer buildContainerAvatar(double mdw) {
     return AnimatedContainer(
         duration: Duration(milliseconds: 900),
         height: 100,
