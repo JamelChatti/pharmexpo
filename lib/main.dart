@@ -10,6 +10,7 @@ import 'package:pharmexpo/pages/avene.dart';
 import 'package:pharmexpo/pages/detailArticl.dart';
 import 'package:pharmexpo/pages/login.dart';
 import 'package:pharmexpo/pages/loginex.dart';
+import 'package:pharmexpo/pages/post.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,6 +42,9 @@ class MyApp extends StatelessWidget {
           },
           'home'  :(context) {
             return MyHome();
+          },
+          'post'  :(context) {
+            return Post();
           },
 
     }

@@ -54,6 +54,17 @@ class _MyDrawerState extends State<MyDrawer> {
                 Navigator.of(context).pushNamed('categories');
               },
             ),
+            isSignin? ListTile(
+              title: Text('Ajouter un commentaire'),
+              leading: Icon(
+                Icons.chat,
+                color: Colors.blue,
+              ),
+              onTap: () {
+                Navigator.of(context).pushNamed('post');
+              },
+            )
+            : SizedBox(height: 1,),
             Divider(
               color: Colors.red,
               height: 30,

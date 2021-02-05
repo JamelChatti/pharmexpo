@@ -310,47 +310,51 @@ class _LoginState extends State<Login> {
                                 ]),
                           ),
                         ),
-                        Container(child: Text('Se connecter avec mon compte:', textAlign: TextAlign.center,),),
-                        Row(
-                          children: <Widget>[
-                            Padding(padding: EdgeInsets.all(7) ,),
-                            Expanded(
-                              child: (RaisedButton(
-                                elevation: 20,
-                                padding:EdgeInsets.all(10),
-                                color: Colors.lightBlueAccent[100],
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Image.asset('images/rsocial/f.png', fit: BoxFit.fill, height: 50,width: 150,),
-                                    SizedBox(width: 10,),
-                                  ],
-                                ),
+                        showsignin?
+                        Column(children:<Widget> [
+                          Container(child: Text('Se connecter avec un compte:', textAlign: TextAlign.center,),),
+                          Row(
+                            children: <Widget>[
+                              Padding(padding: EdgeInsets.all(7) ,),
+                              Expanded(
+                                child: (RaisedButton(
+                                  elevation: 20,
+                                  padding:EdgeInsets.all(10),
+                                  color: Colors.lightBlueAccent[100],
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image.asset('images/rsocial/f.png', fit: BoxFit.fill, height: 50,width: 150,),
+                                      SizedBox(width: 10,),
+                                    ],
+                                  ),
 
-                                onPressed: () {},
-                              )),
-                            ),
-                            Padding(padding: EdgeInsets.all(7) ,),
-                            Expanded(
-                              child: (RaisedButton(
-                                elevation: 20,
-                                padding:EdgeInsets.all(10),
-                                color: Colors.red[300],
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Image.asset('images/rsocial/g.png',fit: BoxFit.fill, height: 50,width: 150,),
-                                    SizedBox(width: 10,),
+                                  onPressed: () {},
+                                )),
+                              ),
+                              Padding(padding: EdgeInsets.all(7) ,),
+                              Expanded(
+                                child: (RaisedButton(
+                                  elevation: 20,
+                                  padding:EdgeInsets.all(10),
+                                  color: Colors.red[300],
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image.asset('images/rsocial/g.png',fit: BoxFit.fill, height: 50,width: 150,),
+                                      SizedBox(width: 10,),
 
-                                  ],
-                                ),
+                                    ],
+                                  ),
 
-                                onPressed: () {},
-                              )),
-                            ),
-                            Padding(padding: EdgeInsets.all(7) ,),
-                          ],
-                        ),
+                                  onPressed: () {},
+                                )),
+                              ),
+                              Padding(padding: EdgeInsets.all(7) ,),
+                            ],
+                          ),
+                        ],)
+                        : Text('')
 
                       ]),
                     ),
@@ -466,7 +470,9 @@ class _LoginState extends State<Login> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    //debut nom utilisateur
+                Container(  ),
+
+              //debut nom utilisateur
                     Text(
                       'email de l\'utilisateur',
                       style: TextStyle(color: Colors.blue),
@@ -527,6 +533,13 @@ class _LoginState extends State<Login> {
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  Container(
+                    height: 50,
+                    // height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child:Center(
+                      child: MyStatefulWidget(),
+                    ), ),
                   //debut nom utilisateur
                   Text(
                     'Nom de l\'utilisateur',
@@ -604,6 +617,63 @@ class _LoginState extends State<Login> {
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
                   color: Colors.blue, style: BorderStyle.solid, width: 1))),
+    );
+  }
+}
+class MyStatefulWidget extends StatefulWidget {
+  MyStatefulWidget({Key key}) : super(key: key);
+
+  @override
+  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+}
+
+/// This is the private State class that goes with MyStatefulWidget.
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  String dropdownValue = 'One';
+
+  @override
+  Widget build(BuildContext context) {
+    return    Container(
+      width: 300,
+      height: 50,
+      decoration: BoxDecoration(
+        color: const Color(0xff7c94b6),
+
+        border: Border.all(
+          color: Colors.black,
+          width: 3,
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child:DropdownButton<String>(
+
+        value: dropdownValue,
+        icon: Icon(Icons.arrow_downward),
+        iconSize: 24,
+        elevation: 16,
+        style: TextStyle(color: Colors.deepPurple),
+        underline: Container(
+
+          height: 2,
+          decoration: BoxDecoration(border:Border(top: BorderSide(width: 2.0, color: Colors.lightBlue.shade50),
+            bottom: BorderSide(width: 2.0, color: Colors.lightBlue.shade900),)),
+          //color: Colors.deepPurpleAccent,
+        ),
+        onChanged: (String newValue) {
+          setState(() {
+            dropdownValue = newValue;
+          });
+        },
+        items: <String>['One', 'Two', 'Free', 'Four']
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+
+
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+      ) ,
     );
   }
 }

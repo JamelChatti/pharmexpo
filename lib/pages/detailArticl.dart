@@ -18,6 +18,8 @@ class DetailArticl extends StatefulWidget {
   final poso_d;
   DetailArticl({this.forme_d,this.poso_d,
     this.allaitant_d,this.mode_util_d,this.cat_art_d,this.contr_indic_d,this.eff_indes_d,this.enceinte_d,this.nom_d, this.indication_d, this.contenance_d,this.labo_d,this.image_d, this.prix_d});
+  String _selectedLocation = 'Please choose a location';
+
 
   @override
   _DetailArticlState createState() => _DetailArticlState();
